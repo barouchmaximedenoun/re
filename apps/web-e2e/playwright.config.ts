@@ -24,7 +24,9 @@ export default defineConfig({
   },
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm exec nx run @org/web:dev',
+    /* command: 'pnpm exec nx run @org/web:dev',*/
+    /* command: 'pnpm nx dev web', */
+    command: 'pnpm exec nx run web:dev',
     url: 'http://localhost:3000',
     reuseExistingServer: true,
     cwd: workspaceRoot,
@@ -64,5 +66,13 @@ export default defineConfig({
       name: 'Google Chrome',
       use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     } */
+  ],
+  outputDir: '../../dist/.playwright/apps/web-e2e/test-results',
+  reporter: [
+    ['html', { 
+      outputFolder: '../../dist/.playwright/apps/web-e2e/playwright-report',
+      open: 'never' // Empêche l'ouverture auto qui échoue parfois en monorepo
+    }],
+    ['dot'],
   ],
 });

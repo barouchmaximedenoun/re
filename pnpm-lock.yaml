@@ -45,6 +45,9 @@ importers:
       '@nx/playwright':
         specifier: 22.7.1
         version: 22.7.1(0914e6729b234c971c425e19a892bd69)
+      '@nx/react':
+        specifier: ^22.7.1
+        version: 22.7.1(aaad953f00aacabbf5378ee84ed97179)
       '@playwright/test':
         specifier: ^1.36.0
         version: 1.59.1

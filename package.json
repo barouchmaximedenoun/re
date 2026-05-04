@@ -4,7 +4,14 @@
   "license": "MIT",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "ci:install": "pnpm install --frozen-lockfile"
+    "ci:install": "pnpm install --frozen-lockfile",
+    "web": "pnpm exec nx run web:dev",
+    "test": "npx nx test web --coverage",
+    "test:watch": "npx nx test web --watch",
+    "e2e": "npx nx e2e web-e2e --skip-nx-cache",
+    "e2e:ui": "npx nx e2e web-e2e --ui --skip-nx-cache",
+    "report:e2e": "npx playwright show-report dist/.playwright/apps/web-e2e/playwright-report",
+    "report:coverage": "open dist/coverage/apps/web/index.html"
   },
   "private": true,
   "devDependencies": {
@@ -17,6 +24,7 @@
     "@nx/js": "22.7.1",
     "@nx/next": "^22.7.1",
     "@nx/playwright": "22.7.1",
+    "@nx/react": "^22.7.1",
     "@playwright/test": "^1.36.0",
     "@swc-node/register": "1.11.1",
     "@swc/cli": "~0.8.0",
