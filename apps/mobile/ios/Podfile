@@ -31,5 +31,19 @@ target 'Mobile' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+    # 2. On ajoute le correctif pour le fichier base.h de la bibliothèque fmt
+    # LE CORRECTIF CI-DESSOUS
+    # Patch robuste pour fmt/base.h
+    fmt_base = File.join(installer.sandbox.root, 'fmt', 'include', 'fmt', 'base.h')
+    if File.exist?(fmt_base)
+      content = File.read(fmt_base)
+      # On force FMT_USE_CONSTEVAL à 0 de manière systématique
+      if content.include?('FMT_USE_CONSTEVAL')
+        patched = content.gsub(/#\s*define\s+FMT_USE_CONSTEVAL\s+1/, '#define FMT_USE_CONSTEVAL 0')
+        File.chmod(0644, fmt_base)
+        File.write(fmt_base, patched)
+        Pod::UI.puts "Successfully forced FMT_USE_CONSTEVAL=0 in base.h".green
+      end
+    end
   end
 end
