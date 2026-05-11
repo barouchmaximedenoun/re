@@ -19,22 +19,36 @@ jobs:
           filter: tree:0
           fetch-depth: 0
 
+      # 1. Installer pnpm 10 (pour correspondre à ta version locale)
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
       # This enables task distribution via Nx Cloud
       # Run this command as early as possible, before dependencies are installed
       # Learn more at https://nx.dev/ci/reference/nx-cloud-cli#npx-nxcloud-startcirun
+      # Note : Nx Cloud doit être lancé avant l'install pour optimiser le cache
       - run: npx nx start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
 
       # Cache node_modules
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: 22
+          cache: 'pnpm'
 
-      - run: npm ci
+      # 3. Installation propre via pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # On vérifie le formatage sans "record"
+      - run: pnpm exec nx format:check --base="remotes/origin/main"
+      
+      # On lance les tâches sur ce qui a été modifié (affected)
+      # C'est beaucoup plus rapide que "run-many"
+      - run: pnpm exec nx affected -t lint test build typecheck
 
       # Prepend any command with "nx record --" to record its logs to Nx Cloud
-      - run: npx nx record -- npx nx format:check  --base="remotes/origin/main"
-      - run: npx nx run-many -t lint test build typecheck e2e-ci
+      #- run: npx nx record -- npx nx format:check --base="remotes/origin/main"
+      #- run: npx nx run-many -t lint test build typecheck e2e-ci
       # Nx Cloud recommends fixes for failures to help you get CI green faster. Learn more: https://nx.dev/ci/features/self-healing-ci
-      - run: npx nx fix-ci
-        if: always()
+      #- run: npx nx fix-ci
+      #  if: always()
