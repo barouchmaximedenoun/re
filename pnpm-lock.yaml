@@ -307,6 +307,8 @@ importers:
 
   libs/infra/db: {}
 
+  libs/infra/http: {}
+
   libs/platform/identity: {}
 
 packages:
