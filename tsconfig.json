@@ -20,6 +20,9 @@
     },
     {
       "path": "./libs/platform/identity"
+    },
+    {
+      "path": "./libs/infra/db"
     }
   ]
 }

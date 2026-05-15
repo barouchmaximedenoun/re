@@ -305,6 +305,8 @@ importers:
 
   apps/web-e2e: {}
 
+  libs/infra/db: {}
+
   libs/platform/identity: {}
 
 packages:
