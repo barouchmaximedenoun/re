@@ -2,6 +2,7 @@ packages:
   - 'apps/'
   - 'packages/'
   - 'apps/*'
+  - 'libs/platform/*'
 allowBuilds:
   '@parcel/watcher': true
   '@swc/core': true
