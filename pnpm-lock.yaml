@@ -14,9 +14,6 @@ importers:
       axios:
         specifier: ^1.6.0
         version: 1.16.0
-      express:
-        specifier: ^4.21.2
-        version: 4.22.1
       maplibre-gl:
         specifier: ^5.24.0
         version: 5.24.0
@@ -135,9 +132,6 @@ importers:
       '@testing-library/react':
         specifier: 16.3.0
         version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.25
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
@@ -270,6 +264,10 @@ importers:
       express:
         specifier: ^4.21.2
         version: 4.22.1
+    devDependencies:
+      '@types/express':
+        specifier: ^4.17.25
+        version: 4.17.25
 
   apps/api-e2e: {}
 
@@ -13297,9 +13295,7 @@ snapshots:
       metro-runtime: 0.82.5
     transitivePeerDependencies:
       - '@babel/core'
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-colors@0.74.89': {}
 
