@@ -18,4 +18,7 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: 'test-output/jest/coverage',
+  // ⚡️ FORCE JEST À NE REGARDER QUE LE DOSSIER SRC DE L'API :
+  roots: ['<rootDir>/src'],
+  testMatch: ['**/+(*.)+(spec|test).+(ts|js)?(x)'],
 };

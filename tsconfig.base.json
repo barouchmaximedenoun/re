@@ -16,6 +16,10 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@org/source"]
+    "customConditions": ["@org/source"],
+    "paths": {
+      "@platform/identity": ["./libs/platform/identity/src/index.ts"],
+      "@infra/db": ["./libs/infra/db/src/index.ts"]
+    }
   }
 }

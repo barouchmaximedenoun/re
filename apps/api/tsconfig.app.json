@@ -2,11 +2,15 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "types": ["node"],
+    "types": ["node", "jest"],
     "rootDir": "src",
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo"
   },
-  "include": ["src/**/*.ts"],
+  "include": [
+    "src/**/*.ts",
+    "../../libs/platform/identity/src/**/*.ts",
+    "../../libs/infra/db/src/**/*.ts"
+  ],
   "exclude": [
     "out-tsc",
     "dist",
@@ -17,5 +21,10 @@
     "eslint.config.js",
     "eslint.config.cjs",
     "eslint.config.mjs"
+  ],
+  "references": [
+    {
+      "path": "../../libs/platform/identity/tsconfig.lib.json"
+    }
   ]
 }
