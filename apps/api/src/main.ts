@@ -15,6 +15,10 @@ app.use(express.json());
 
 app.use("/auth", authRoutes);
 
+app.get('/health', (_, res) => {
+  res.json({ ok: true });
+});
+
 app.listen(port, host, () => {
   console.log(`[ ready ] http://${host}:${port}`);
 });

@@ -25,6 +25,9 @@
   "references": [
     {
       "path": "../../libs/platform/identity/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/infra/db/tsconfig.lib.json"
     }
   ]
 }

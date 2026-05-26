@@ -1,9 +1,9 @@
-import { db } from '../db.js';
+import { getDb } from '../db.js';
 
 export async function findUserByEmail(
   email: string
 ) {
-  const result = await db.query(
+  const result = await getDb().query(
     `
     SELECT *
     FROM users
@@ -20,7 +20,7 @@ export async function createUser(data: {
   passwordHash: string;
   name: string;
 }) {
-  const result = await db.query(
+  const result = await getDb().query(
     `
     INSERT INTO users (
       email,

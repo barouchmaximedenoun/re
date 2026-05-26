@@ -1,5 +1,12 @@
-import pg from "pg";
+import {Pool} from "pg";
 
-export const db = new pg.Pool({
+/* old deprecated
+export const db = new Pool({
   connectionString: process.env.DATABASE_URL,
-});
+}); 
+*/
+export function getDb() {
+    return  new Pool({
+      connectionString: process.env.DATABASE_URL,
+    });
+}
