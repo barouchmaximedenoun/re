@@ -18,6 +18,14 @@
         "${workspaceFolder}/apps/api/dist/**/*.(m|c|)js",
         "!**/node_modules/**"
       ]
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach API",
+      "port": 9229,
+      "restart": true,
+      "skipFiles": ["<node_internals>/**"],
     }
   ]
 }
