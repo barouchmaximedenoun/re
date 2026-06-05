@@ -13,10 +13,10 @@
       "path": "./apps/mobile"
     },
     {
-      "path": "./apps/api-e2e"
+      "path": "./apps/gateway-e2e"
     },
     {
-      "path": "./apps/api"
+      "path": "./apps/gateway"
     },
     {
       "path": "./libs/platform/identity"

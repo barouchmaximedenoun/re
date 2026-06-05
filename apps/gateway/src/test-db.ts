@@ -1,8 +1,7 @@
 import dotenv from 'dotenv';
-import {getDb} from '@infra/db';
+import { getDb } from '@infra/db';
 
 dotenv.config();
-
 
 async function test() {
   //const result = await db.query('SELECT NOW()');

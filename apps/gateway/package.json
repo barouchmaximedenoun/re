@@ -1,5 +1,5 @@
 {
-  "name": "@org/api",
+  "name": "@org/gateway",
   "version": "0.0.1",
   "private": true,
   "nx": {
@@ -12,15 +12,15 @@
         "defaultConfiguration": "production",
         "options": {
           "platform": "node",
-          "outputPath": "apps/api/dist",
+          "outputPath": "apps/gateway/dist",
           "format": [
             "cjs"
           ],
           "bundle": false,
-          "main": "apps/api/src/main.ts",
-          "tsConfig": "apps/api/tsconfig.app.json",
+          "main": "apps/gateway/src/main.ts",
+          "tsConfig": "apps/gateway/tsconfig.app.json",
           "assets": [
-            "apps/api/src/assets"
+            "apps/gateway/src/assets"
           ],
           "esbuildOptions": {
             "sourcemap": true,
@@ -48,8 +48,8 @@
         "cache": true,
         "executor": "@nx/js:prune-lockfile",
         "outputs": [
-          "{workspaceRoot}/apps/api/dist/package.json",
-          "{workspaceRoot}/apps/api/dist/pnpm-lock.yaml"
+          "{workspaceRoot}/apps/gateway/dist/package.json",
+          "{workspaceRoot}/apps/gateway/dist/pnpm-lock.yaml"
         ],
         "options": {
           "buildTarget": "build"
@@ -61,7 +61,7 @@
         ],
         "cache": true,
         "outputs": [
-          "{workspaceRoot}/apps/api/dist/workspace_modules"
+          "{workspaceRoot}/apps/gateway/dist/workspace_modules"
         ],
         "executor": "@nx/js:copy-workspace-modules",
         "options": {

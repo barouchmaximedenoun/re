@@ -256,7 +256,7 @@ importers:
         specifier: ~4.1.0
         version: 4.1.5(@types/node@20.19.9)(@vitest/coverage-v8@4.1.6)(@vitest/ui@4.1.5)(jsdom@22.1.0)(vite@8.0.10(@types/node@20.19.9)(esbuild@0.27.7)(jiti@2.4.2)(less@4.5.1)(sass-embedded@1.99.0)(sass@1.99.0)(terser@5.46.2)(tsx@4.22.3)(yaml@2.8.0))
 
-  apps/api:
+  apps/gateway:
     dependencies:
       cors:
         specifier: ^2.8.6
@@ -275,7 +275,7 @@ importers:
         specifier: ^4.17.25
         version: 4.17.25
 
-  apps/api-e2e: {}
+  apps/gateway-e2e: {}
 
   apps/mobile:
     dependencies:
@@ -324,8 +324,6 @@ importers:
       '@types/pg':
         specifier: ^8.20.0
         version: 8.20.0
-
-  libs/infra/http: {}
 
   libs/platform/identity:
     dependencies:

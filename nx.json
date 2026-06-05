@@ -57,7 +57,7 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/api-e2e/**/*"]
+      "exclude": ["apps/gateway-e2e/**/*"]
     },
     {
       "plugin": "@nx/react-native/plugin",
