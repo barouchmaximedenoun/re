@@ -2,8 +2,12 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "types": ["node", "jest"],
-    "rootDir": "src",
+    //"rootDir": "src",
+    //"rootDirs": ["src", "../../libs/infra/db/src", "../../libs/platform/indentity/src"],
+    //"skipLibCheck": true,
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo"
   },
   "include": [
@@ -17,6 +21,8 @@
     "jest.config.ts",
     "jest.config.cts",
     "src/**/*.spec.ts",
+    "../../libs/infra/db/src/**/*.spec.ts",
+    "../../libs/platform/identity/src/**/*.spec.ts",
     "src/**/*.test.ts",
     "eslint.config.js",
     "eslint.config.cjs",
