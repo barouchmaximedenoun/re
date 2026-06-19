@@ -11,16 +11,19 @@
         ],
         "defaultConfiguration": "production",
         "options": {
+          "bundle": true,
+          "thirdParty": true,
+          "external": ["^[^./].*$", "bcrypt"],
           "platform": "node",
           "outputPath": "apps/gateway/dist",
           "format": [
             "cjs"
           ],
-          "bundle": false,
           "main": "apps/gateway/src/main.ts",
           "tsConfig": "apps/gateway/tsconfig.app.json",
           "assets": [
-            "apps/gateway/src/assets"
+            "apps/gateway/src/assets",
+            "apps/gateway/.env" 
           ],
           "esbuildOptions": {
             "sourcemap": true,
@@ -102,10 +105,15 @@
       }
     }
   },
+  
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "jsonwebtoken": "9.0.3",
+    "bcrypt": "6.0.0",
+    "vitest": "~4.1.0",
+    "pg": "8.20.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

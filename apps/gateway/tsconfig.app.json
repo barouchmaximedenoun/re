@@ -1,13 +1,21 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
     "outDir": "dist",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "types": ["node", "jest"],
     //"rootDir": "src",
     //"rootDirs": ["src", "../../libs/infra/db/src", "../../libs/platform/indentity/src"],
+    "rootDir": ".",
+    "rootDirs": [".", "../../libs/infra/db/src", "../../libs/platform/indentity/src"],
+    
     //"skipLibCheck": true,
+    
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo"
   },
   "include": [
