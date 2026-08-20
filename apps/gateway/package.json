@@ -13,7 +13,7 @@
         "options": {
           "bundle": true,
           "thirdParty": true,
-          "external": ["^[^./].*$", "bcrypt"],
+          "external": ["^[^./].*$", "bcrypt", "pg"],
           "platform": "node",
           "outputPath": "apps/gateway/dist",
           "format": [
@@ -112,8 +112,7 @@
     "express": "^4.21.2",
     "jsonwebtoken": "9.0.3",
     "bcrypt": "6.0.0",
-    "vitest": "~4.1.0",
-    "pg": "8.20.0"
+    "pg": "8.22.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

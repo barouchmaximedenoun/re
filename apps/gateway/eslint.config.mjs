@@ -22,7 +22,7 @@ export default [
           checkObsoleteDependencies: true,
           checkVersionMismatches: true,
           includeTransitiveDependencies: true,
-          ignoredDependencies: []
+          ignoredDependencies: ['vitest']
         }
       ]
     }
