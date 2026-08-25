@@ -6,7 +6,7 @@ export async function findUserByEmail(
   const result = await getDb().query(
     `
     SELECT *
-    FROM users
+    FROM auth_schema.users
     WHERE email = $1
     `,
     [email]
@@ -22,7 +22,7 @@ export async function createUser(data: {
 }) {
   const result = await getDb().query(
     `
-    INSERT INTO users (
+    INSERT INTO auth_schema.users (
       email,
       password_hash,
       name
