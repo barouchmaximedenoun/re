@@ -1,0 +1,14 @@
+node_modules
+.nx
+dist
+apps/**/node_modules
+libs/**/node_modules
+.git
+.agents
+.claude
+.codex
+.cursor
+.gemini
+.opencode
+.github
+.vscode

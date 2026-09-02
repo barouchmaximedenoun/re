@@ -13,3 +13,4 @@ allowBuilds:
   nx: true
   sharp: true
   unrs-resolver: true
+  bcrypt: true

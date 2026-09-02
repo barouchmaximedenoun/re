@@ -1,0 +1,88 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  db-setup:
+    build:
+      context: .
+      dockerfile: docker/db-setup/Dockerfile
+    container_name: db-setup
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+
+      DB_NAME: auth
+      SCHEMA_NAME: auth_schema
+
+      ADMIN_ROLE: auth_admin_role
+      MIGRATION_ROLE: auth_migration_role
+      RW_ROLE: auth_rw_role
+      RO_ROLE: auth_ro_role
+
+      ADMIN_USER: auth_admin
+      ADMIN_PASSWORD: pwd
+
+      MIGRATION_USER: auth_migration
+      MIGRATION_PASSWORD: pwd
+
+      APP_USER: auth_app
+      APP_PASSWORD: pwd
+
+      READONLY_USER: auth_readonly
+      READONLY_PASSWORD: pwd
+
+      PGHOST: postgres
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: postgres
+
+      INFRA_DB_SETUP_DIR: /opt/db/infra/setup
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/gateway/Dockerfile
+    container_name: gateway
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 8000
+
+      DATABASE_URL: postgresql://auth_app:pwd@postgres:5432/auth
+      JWT_SECRET: supersecretjwt
+
+    ports:
+      - "8000:8000"
+    depends_on:
+      db-setup:
+        condition: service_completed_successfully
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
