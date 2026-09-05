@@ -24,8 +24,12 @@ services:
       dockerfile: docker/db-setup/Dockerfile
     container_name: db-setup
     environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
+      PGHOST: postgres
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: postgres
+
+      INFRA_DB_SETUP_DIR: /opt/db/infra/setup
 
       DB_NAME: auth
       SCHEMA_NAME: auth_schema
@@ -47,12 +51,6 @@ services:
       READONLY_USER: auth_readonly
       READONLY_PASSWORD: pwd
 
-      PGHOST: postgres
-      PGPORT: 5432
-      PGUSER: postgres
-      PGPASSWORD: postgres
-
-      INFRA_DB_SETUP_DIR: /opt/db/infra/setup
     depends_on:
       postgres:
         condition: service_healthy

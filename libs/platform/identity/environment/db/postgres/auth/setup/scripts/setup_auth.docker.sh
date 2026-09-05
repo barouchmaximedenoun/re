@@ -13,10 +13,10 @@ TEMPLATE_DIR="$AUTH_DIR/templates"
 
 envsubst < "$TEMPLATE_DIR/002_tables.sql" \
     | PGPASSWORD="$MIGRATION_PASSWORD" \
-      psql -h "$DB_HOST" -p "$DB_PORT" \
+      psql -h "$PGHOST" -p "$PGPORT" \
            -d "$DB_NAME" -U "$MIGRATION_USER"
 
 envsubst < "$TEMPLATE_DIR/006_seeds.sql" \
     | PGPASSWORD="$MIGRATION_PASSWORD" \
-      psql -h "$DB_HOST" -p "$DB_PORT" \
+      psql -h "$PGHOST" -p "$PGPORT" \
            -d "$DB_NAME" -U "$MIGRATION_USER"

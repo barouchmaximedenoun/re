@@ -17,18 +17,66 @@ TEMPLATE_DIR="$SCRIPT_DIR/../templates"
 
 CURRENT_DB_USER="$(psql -d postgres -Atc 'SELECT current_user;')"
 export CURRENT_DB_USER
+echo "Using PostgreSQL admin user: $CURRENT_DB_USER"
 
 # Create the database from the PostgreSQL administration database.
-envsubst < "$TEMPLATE_DIR/001_create_database.sql" | psql -d postgres
+envsubst < "$TEMPLATE_DIR/001_create_database.sql" \
+    | psql \
+        -h "$PGHOST" \
+        -p "$PGPORT" \
+        -U "$PGUSER" \
+        -d postgres
 
 # Configure the target database.
-envsubst < "$TEMPLATE_DIR/002_create_schema.sql" | psql -d "$DB_NAME"
+envsubst < "$TEMPLATE_DIR/002_create_schema.sql" \
+    | psql \
+        -h "$PGHOST" \
+        -p "$PGPORT" \
+        -U "$PGUSER" \
+        -d "$DB_NAME"
 
-envsubst < "$TEMPLATE_DIR/003_roles/001_create_roles.sql" | psql -d "$DB_NAME"
-envsubst < "$TEMPLATE_DIR/003_roles/002_admin_permissions.sql" | psql -d "$DB_NAME"
-envsubst < "$TEMPLATE_DIR/003_roles/003_migration_permissions.sql" | psql -d "$DB_NAME"
-envsubst < "$TEMPLATE_DIR/003_roles/004_rw_permissions.sql" | psql -d "$DB_NAME"
-envsubst < "$TEMPLATE_DIR/003_roles/005_ro_permissions.sql" | psql -d "$DB_NAME"
-envsubst < "$TEMPLATE_DIR/003_roles/006_default_privileges.sql" | psql -d "$DB_NAME"
+# Create roles/users and permissions.
+envsubst < "$TEMPLATE_DIR/003_roles/001_create_roles.sql" \
+    | psql \
+        -h "$PGHOST" \
+        -p "$PGPORT" \
+        -U "$PGUSER" \
+        -d "$DB_NAME"
 
+envsubst < "$TEMPLATE_DIR/003_roles/002_admin_permissions.sql" \
+    | psql \
+        -h "$PGHOST" \
+        -p "$PGPORT" \
+        -U "$PGUSER" \
+        -d "$DB_NAME"
+
+envsubst < "$TEMPLATE_DIR/003_roles/003_migration_permissions.sql" \
+    | psql \
+        -h "$PGHOST" \
+        -p "$PGPORT" \
+        -U "$PGUSER" \
+        -d "$DB_NAME"
+
+envsubst < "$TEMPLATE_DIR/003_roles/004_rw_permissions.sql" \
+    | psql \
+        -h "$PGHOST" \
+        -p "$PGPORT" \
+        -U "$PGUSER" \
+        -d "$DB_NAME"
+
+envsubst < "$TEMPLATE_DIR/003_roles/005_ro_permissions.sql" \
+    | psql \
+        -h "$PGHOST" \
+        -p "$PGPORT" \
+        -U "$PGUSER" \
+        -d "$DB_NAME"
+
+envsubst < "$TEMPLATE_DIR/003_roles/006_default_privileges.sql" \
+    | psql \
+        -h "$PGHOST" \
+        -p "$PGPORT" \
+        -U "$PGUSER" \
+        -d "$DB_NAME"
+
+echo "Database setup completed successfully."
 
