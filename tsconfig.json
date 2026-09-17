@@ -28,6 +28,21 @@
       "path": "./libs/platform/errors"
     },
     {
+      "path": "./libs/platform/i18n"
+    },
+    {
+      "path": "./libs/platform/logging"
+    },
+    {
+      "path": "./libs/platform/observability/sentry"
+    },
+    {
+      "path": "./libs/clients/redis"
+    },
+    {
+      "path": "./libs/infra/cache"
+    },
+    {
       "path": "./libs/clients/http"
     }
   ]
