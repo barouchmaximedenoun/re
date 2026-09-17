@@ -23,6 +23,12 @@
     },
     {
       "path": "./libs/infra/db"
+    },
+    {
+      "path": "./libs/platform/errors"
+    },
+    {
+      "path": "./libs/clients/http"
     }
   ]
 }

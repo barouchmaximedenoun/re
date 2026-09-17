@@ -4,6 +4,7 @@ packages:
   - 'apps/*'
   - 'libs/platform/*'
   - 'libs/infra/*'
+  - 'libs/clients/*'
 allowBuilds:
   '@parcel/watcher': true
   '@swc/core': true
