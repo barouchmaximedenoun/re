@@ -1,36 +1,55 @@
-import { findUserByEmail } from '@infra/db';
-
-import { verifyPassword } from './password.js';
+import {
+  findLoginAttemptByEmail,
+  findUserByEmail,
+  recordLoginFailure,
+  resetLoginAttempts,
+} from '@infra/db';
+import { UnauthorizedError } from '@platform/errors';
 
 import { signAccessToken } from './jwt.js';
+import { verifyPassword } from './password.js';
 
-export async function login(
-  email: string,
-  password: string
-) {
-  const user =
-    await findUserByEmail(email);
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_DURATION_MS = 15 * 60 * 1000;
+
+export async function login(email: string, password: string) {
+  const loginAttempt = await findLoginAttemptByEmail(email);
+
+  if (
+    loginAttempt?.lock_until &&
+    loginAttempt.lock_until.getTime() > Date.now()
+  ) {
+    throw new UnauthorizedError(
+      'Invalid credentials',
+      'AUTH_INVALID_CREDENTIALS',
+    );
+  }
+
+  const user = await findUserByEmail(email);
 
   if (!user) {
-    throw new Error(
-      'Invalid credentials'
+    await recordFailedLogin(email);
+
+    throw new UnauthorizedError(
+      'Invalid credentials',
+      'AUTH_INVALID_CREDENTIALS',
     );
   }
 
-  const validPassword =
-    await verifyPassword(
-      password,
-      user.password_hash
-    );
+  const validPassword = await verifyPassword(password, user.password_hash);
 
   if (!validPassword) {
-    throw new Error(
-      'Invalid credentials'
+    await recordFailedLogin(email);
+
+    throw new UnauthorizedError(
+      'Invalid credentials',
+      'AUTH_INVALID_CREDENTIALS',
     );
   }
 
-  const token =
-    signAccessToken(user.id);
+  await resetLoginAttempts(email);
+
+  const token = signAccessToken(user.id);
 
   return {
     token,
@@ -41,4 +60,23 @@ export async function login(
       name: user.name,
     },
   };
+}
+
+async function recordFailedLogin(email: string): Promise<void> {
+  const currentAttempt = await findLoginAttemptByEmail(email);
+
+  const lockExpired =
+    currentAttempt?.lock_until &&
+    currentAttempt.lock_until.getTime() <= Date.now();
+
+  const currentAttempts = lockExpired ? 0 : (currentAttempt?.attempts ?? 0);
+
+  const nextAttempts = currentAttempts + 1;
+
+  const lockUntil =
+    nextAttempts >= MAX_LOGIN_ATTEMPTS
+      ? new Date(Date.now() + LOCKOUT_DURATION_MS)
+      : null;
+
+  await recordLoginFailure(email, lockUntil);
 }

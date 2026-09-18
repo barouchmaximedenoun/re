@@ -355,6 +355,9 @@ importers:
       '@infra/db':
         specifier: workspace:*
         version: link:../../infra/db
+      '@platform/errors':
+        specifier: workspace:*
+        version: link:../errors
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@infra/db": "workspace:*",
+    "@platform/errors": "workspace:*",
     "bcrypt": "^6.0.0",
     "jsonwebtoken": "^9.0.3"
   },

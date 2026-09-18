@@ -16,6 +16,9 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
+      "path": "../errors/tsconfig.lib.json"
+    },
+    {
       "path": "../../infra/db/tsconfig.lib.json"
     }
   ],

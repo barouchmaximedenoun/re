@@ -1,23 +1,19 @@
+import { createUser, findUserByEmail } from '@infra/db';
+import { ConflictError } from '@platform/errors';
 
-import { createUser, findUserByEmail } from "@infra/db";
 import { hashPassword } from './password.js';
 
-export async function register(
-  email: string,
-  password: string,
-  name: string
-) {
-  const existingUser =
-    await findUserByEmail(email);
+export async function register(email: string, password: string, name: string) {
+  const existingUser = await findUserByEmail(email);
 
   if (existingUser) {
-    throw new Error(
-      'Email already exists'
+    throw new ConflictError(
+      'Email already exists',
+      'AUTH_EMAIL_ALREADY_EXISTS',
     );
   }
 
-  const passwordHash =
-    await hashPassword(password);
+  const passwordHash = await hashPassword(password);
 
   return createUser({
     email,
