@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "composite": true,
     "outDir": "./out-tsc/jest",
     "types": ["jest", "node"]
   },
@@ -14,6 +15,6 @@
   "references": [
     {
       "path": "./tsconfig.app.json"
-    }
+    },
   ]
 }

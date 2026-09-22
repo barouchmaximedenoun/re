@@ -1,29 +1,45 @@
 import { type Request, type Response } from 'express';
-import { register, login } from '@platform/identity';
 
-export async function registerController(req: Request, res: Response) {
-  try {
+import {
+  getDeviceInfo,
+} from '@platform/identity';
+
+import {
+  register,
+  login,
+} from '@platform/identity';
+
+export async function registerController(
+  req: Request,
+  res: Response,
+) {
     const { email, password, name } = req.body;
 
-    const result = await register(email, password, name);
+    const result = await register(
+      email,
+      password,
+      name,
+    );
 
     res.json(result);
-  } catch (e: any) {
-    res.status(400).json({
-      error: e.message,
-    });
-  }
 }
-export async function loginController(req: Request, res: Response) {
-  try {
+
+export async function loginController(
+  req: Request,
+  res: Response,
+) {
     const { email, password } = req.body;
 
-    const result = await login(email, password);
+    const deviceInfo = getDeviceInfo({
+      ip: req.ip,
+      headers: req.headers,
+    });
+
+    const result = await login(
+      email,
+      password,
+      deviceInfo,
+    );
 
     res.json(result);
-  } catch (e: any) {
-    res.status(400).json({
-      error: e.message,
-    });
-  }
 }

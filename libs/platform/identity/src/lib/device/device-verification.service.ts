@@ -1,6 +1,6 @@
 import {
   createDeviceVerificationOtp,
-  findValidDeviceVerificationOtp,
+  findValidDeviceVerificationOtpById,
   markDeviceVerificationOtpUsed,
   markDeviceVerified,
   findUserById,
@@ -15,12 +15,16 @@ import { signAccessToken } from '../jwt.js';
 export async function createDeviceVerificationChallenge(
   userId: string,
   deviceId: string,
-): Promise<void> {
+): Promise<{
+  challengeId: string;
+  expiresAt: Date;
+}> {
   const otp = generateOtp();
   const otpCodeHash = hashOtp(otp);
   const expiresAt = getOtpExpiration();
 
-  await createDeviceVerificationOtp({
+  
+  const verificationOtp = await createDeviceVerificationOtp({
     userId,
     deviceId,
     otpCodeHash,
@@ -28,6 +32,11 @@ export async function createDeviceVerificationChallenge(
   });
 
   await sendDeviceVerificationOtp(userId, deviceId, otp);
+
+  return {
+    challengeId: verificationOtp.id,
+    expiresAt: verificationOtp.expires_at,
+  };
 }
 
 async function sendDeviceVerificationOtp(
@@ -43,22 +52,21 @@ async function sendDeviceVerificationOtp(
 }
 
 export async function verifyDeviceOtp(
-  userId: string,
-  deviceId: string,
+  challengeId: string,
   otp: string,
 ): Promise<{
   accessToken: string;
-  refreshToken: { token: string; expiresAt: Date; };
+  refreshToken: {
+    token: string;
+    expiresAt: Date;
+  };
   user: {
     id: string;
     email: string;
     name: string | null;
   };
 }> {
-  const verificationOtp = await findValidDeviceVerificationOtp(
-    userId,
-    deviceId,
-  );
+  const verificationOtp = await findValidDeviceVerificationOtpById(challengeId);
 
   if (!verificationOtp) {
     throw new UnauthorizedError(
@@ -78,9 +86,9 @@ export async function verifyDeviceOtp(
 
   await markDeviceVerificationOtpUsed(verificationOtp.id);
 
-  await markDeviceVerified(deviceId);
+  await markDeviceVerified(verificationOtp.device_id);
 
-  const user = await findUserById(userId);
+  const user = await findUserById(verificationOtp.user_id);
 
   if (!user) {
     throw new UnauthorizedError(
@@ -88,6 +96,7 @@ export async function verifyDeviceOtp(
       'AUTH_INVALID_VERIFICATION',
     );
   }
+
   const accessToken = signAccessToken(user.id);
 
   const refreshToken = await createInitialRefreshToken(user.id);

@@ -12,7 +12,12 @@
     //"rootDir": "src",
     //"rootDirs": ["src", "../../libs/infra/db/src", "../../libs/platform/indentity/src"],
     "rootDir": ".",
-    "rootDirs": [".", "../../libs/infra/db/src", "../../libs/platform/indentity/src"],
+    "rootDirs": [
+      ".", 
+      "../../libs/infra/db/src", 
+      "../../libs/platform/indentity/src",
+      "../../libs/platform/errors/src"
+    ],
     
     //"skipLibCheck": true,
     
@@ -21,6 +26,7 @@
   "include": [
     "src/**/*.ts",
     "../../libs/platform/identity/src/**/*.ts",
+    "../../libs/platform/errors/src/**/*.ts",
     "../../libs/infra/db/src/**/*.ts"
   ],
   "exclude": [
@@ -31,6 +37,7 @@
     "src/**/*.spec.ts",
     "../../libs/infra/db/src/**/*.spec.ts",
     "../../libs/platform/identity/src/**/*.spec.ts",
+    "../../libs/platform/errors/src/**/*.spec.ts",
     "src/**/*.test.ts",
     "eslint.config.js",
     "eslint.config.cjs",
@@ -39,6 +46,9 @@
   "references": [
     {
       "path": "../../libs/platform/identity/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/platform/errors/tsconfig.lib.json"
     },
     {
       "path": "../../libs/infra/db/tsconfig.lib.json"
