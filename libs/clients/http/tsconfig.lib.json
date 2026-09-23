@@ -4,12 +4,21 @@
     "rootDir": "src",
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "composite": true,
     "emitDeclarationOnly": true,
+    "declaration": true,
+    "declarationMap": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["node"]
   },
   "include": ["src/**/*.ts"],
-  "references": [],
+  "references": [
+    {
+      "path": "../../platform/errors/tsconfig.lib.json",
+    }
+  ],
   "exclude": [
     "vite.config.ts",
     "vite.config.mts",

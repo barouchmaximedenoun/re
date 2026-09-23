@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios';
-import type { HttpMethod, HttpClientOptions } from '../http-client.types.js';
+import type { HttpMethod, HttpClientOptions } from '../types.js';
 
 const START_TIME_KEY = '__startTime';
 

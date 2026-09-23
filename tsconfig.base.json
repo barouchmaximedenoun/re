@@ -20,6 +20,7 @@
     "paths": {
       "@platform/identity": ["./libs/platform/identity/src/index.ts"],
       "@platform/errors": ["./libs/platform/errors/src/index.ts"],
+      "@clients/http": ["./libs/clients/http"],
       "@infra/db": ["./libs/infra/db/src/index.ts"]
     }
   }

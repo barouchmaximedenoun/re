@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios';
-import type { TokenProvider } from '../http-client.types.js';
+import type { TokenProvider } from '../types.js';
 
 /**
  * Attaches an Authorization header using the injected token provider.

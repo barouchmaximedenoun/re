@@ -6,5 +6,7 @@ export type {
   HttpResponse,
   HttpMethod,
   TokenProvider,
-  HttpError
 } from './lib/types.js';
+export type {
+  HttpError
+} from "./lib/http-error.js"
