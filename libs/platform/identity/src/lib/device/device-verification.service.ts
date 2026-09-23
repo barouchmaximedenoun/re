@@ -18,6 +18,7 @@ export async function createDeviceVerificationChallenge(
 ): Promise<{
   challengeId: string;
   expiresAt: Date;
+  otp?: string;
 }> {
   const otp = generateOtp();
   const otpCodeHash = hashOtp(otp);
@@ -36,6 +37,9 @@ export async function createDeviceVerificationChallenge(
   return {
     challengeId: verificationOtp.id,
     expiresAt: verificationOtp.expires_at,
+    ...(process.env.NODE_ENV !== 'production'
+    ? { otp }
+    : {}),
   };
 }
 

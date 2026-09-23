@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import authRoutes from './auth/auth.routes.js';
 import { errorMiddleware } from './middleware/error.middleware.js';
 
@@ -14,6 +15,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 app.use('/auth', authRoutes);
 

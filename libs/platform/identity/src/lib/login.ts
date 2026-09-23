@@ -19,11 +19,38 @@ import { verifyPassword } from './password.js';
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MS = 15 * 60 * 1000;
 
+export type User = {
+  id: string;
+  email: string;
+  name: string | null;
+}
+export type Device = {
+  id: string;
+  isVerified: boolean;
+}
+export type LoginResult =
+  | {
+      requiresOtp: true;
+      otpChallengeId: string;
+      otpExpiresAt: Date;
+      otp?: string;
+    }
+  | {
+      requiresOtp: false;
+      accessToken: string;
+      refreshToken: {
+        token: string;
+        expiresAt: Date;
+      };
+      user: User;
+      device: Device;
+    };
+
 export async function login(
   email: string,
   password: string,
   deviceInfo: DeviceInfo,
-) {
+): Promise<LoginResult> {
   const loginAttempt = await findLoginAttemptByEmail(email);
 
   if (
@@ -78,14 +105,19 @@ export async function login(
   }
 
   if (!device.is_verified) {
-    await createDeviceVerificationChallenge(user.id, device.id);
+    const challenge =
+      await createDeviceVerificationChallenge(
+        user.id,
+        device.id,
+      );
 
     return {
       requiresOtp: true,
-      device: {
-        id: device.id,
-        isVerified: false,
-      },
+      otpChallengeId: challenge.challengeId,
+      otpExpiresAt: challenge.expiresAt,
+      ...(challenge?.otp
+    ? { otp:  challenge.otp}
+    : {})
     };
   }
 

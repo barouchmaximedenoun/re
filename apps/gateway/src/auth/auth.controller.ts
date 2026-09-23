@@ -1,13 +1,16 @@
 import { type Request, type Response } from 'express';
 
 import {
-  getDeviceInfo,
-} from '@platform/identity';
-
-import {
   register,
   login,
+  verifyDeviceOtp,
+  getDeviceInfo,
+  logout,
+  refreshSession,
 } from '@platform/identity';
+
+import { clearRefreshTokenCookie, REFRESH_COOKIE_NAME, setRefreshTokenCookie } from "./refresh-cookie";
+import { UnauthorizedError } from "@platform/errors";
 
 export async function registerController(
   req: Request,
@@ -41,5 +44,93 @@ export async function loginController(
       deviceInfo,
     );
 
-    res.json(result);
+    if (result.requiresOtp) {
+      res.json(result);
+      return;
+    }
+
+    setRefreshTokenCookie(
+      res,
+      result.refreshToken.token,
+      result.refreshToken.expiresAt,
+    );
+
+    res.json({
+      requiresOtp: false,
+      accessToken: result.accessToken,
+      user: result.user,
+      device: result.device,
+    });
+}
+
+export async function verifyDeviceController(
+  req: Request,
+  res: Response,
+) {
+  const {
+    otpChallengeId,
+    otp,
+  } = req.body;
+
+  const result = await verifyDeviceOtp(
+    otpChallengeId,
+    otp,
+  );
+
+  setRefreshTokenCookie(
+    res,
+    result.refreshToken.token,
+    result.refreshToken.expiresAt,
+  );
+
+  res.json({
+    accessToken: result.accessToken,
+    user: result.user,
+  });
+}
+
+export async function refreshController(
+  req: Request,
+  res: Response,
+) {
+  const refreshToken =
+    req.cookies[REFRESH_COOKIE_NAME];
+
+  if (!refreshToken) {
+    throw new UnauthorizedError(
+      'Refresh token is required',
+      'AUTH_REFRESH_TOKEN_MISSING',
+    );
+  }
+
+  const result = await refreshSession(
+    refreshToken,
+  );
+
+  setRefreshTokenCookie(
+    res,
+    result.refreshToken.token,
+    result.refreshToken.expiresAt,
+  );
+
+  res.json({
+    accessToken: result.accessToken,
+    user: result.user,
+  });
+}
+
+export async function logoutController(
+  req: Request,
+  res: Response,
+) {
+  const refreshToken =
+    req.cookies[REFRESH_COOKIE_NAME];
+
+  if (refreshToken) {
+    await logout(refreshToken);
+  }
+
+  clearRefreshTokenCookie(res);
+
+  res.status(204).send();
 }

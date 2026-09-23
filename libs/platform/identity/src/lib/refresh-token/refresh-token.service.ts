@@ -1,6 +1,7 @@
 import {
   createRefreshToken,
   findRefreshTokenByHash,
+  findUserById,
   revokeRefreshTokenFamily,
   rotateRefreshToken,
 } from '@infra/db';
@@ -45,7 +46,11 @@ export async function rotateRefreshTokenSession(
 ): Promise<{
   token: string;
   expiresAt: Date;
-  userId: string;
+  user: {
+    id: string;
+    email: string;
+    name: string | null;
+  };
 }> {
   const tokenHash = hashRefreshToken(token);
 
@@ -78,6 +83,13 @@ export async function rotateRefreshTokenSession(
       'AUTH_REFRESH_TOKEN_REUSE',
     );
   }
+  const user = await findUserById(currentToken.user_id);
+  if (!user) {
+    throw new UnauthorizedError(
+      'Refresh token invalid user',
+      'AUTH_REFRESH_TOKEN_INVALID_USER',
+    );
+  }
 
   const newToken = generateRefreshToken();
   const newTokenHash = hashRefreshToken(newToken);
@@ -94,6 +106,10 @@ export async function rotateRefreshTokenSession(
   return {
     token: newToken,
     expiresAt,
-    userId: currentToken.user_id,
+    user: {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    },
   };
 }

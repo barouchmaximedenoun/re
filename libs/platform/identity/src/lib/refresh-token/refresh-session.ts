@@ -3,16 +3,30 @@ import { rotateRefreshTokenSession } from './refresh-token.service.js';
 
 export async function refreshSession(refreshToken: string): Promise<{
   accessToken: string;
-  refreshToken: string;
-  refreshTokenExpiresAt: Date;
+  refreshToken: {
+    token: string;
+    expiresAt: Date;
+  }
+  user: {
+    id: string;
+    email: string;
+    name: string | null;
+  };
 }> {
   const rotated = await rotateRefreshTokenSession(refreshToken);
 
-  const accessToken = signAccessToken(rotated.userId);
+  const accessToken = signAccessToken(rotated.user.id);
 
   return {
     accessToken,
-    refreshToken: rotated.token,
-    refreshTokenExpiresAt: rotated.expiresAt,
+    refreshToken: {
+      token: rotated.token,
+      expiresAt: rotated.expiresAt,
+    },
+    user: {
+      id: rotated.user.id,
+      email: rotated.user.email,
+      name: rotated.user.name,
+    },
   };
 }
