@@ -1,6 +1,9 @@
 import express, { Router } from 'express';
-import { registerController, loginController, verifyDeviceController, refreshController, logoutController } from './auth.controller.js';
+import { registerController, loginController, verifyDeviceController, refreshController, logoutController, meController } from './auth.controller.js';
 import { asyncHandler } from '../middleware/async-handler.js';
+import {
+  authenticate,
+} from './auth.middleware.js';
 
 const router: Router = express.Router();
 
@@ -27,6 +30,12 @@ router.post(
 router.post(
   '/logout',
   asyncHandler(logoutController),
+);
+
+router.get(
+  '/me',
+  authenticate,
+  asyncHandler(meController),
 );
 
 export default router;

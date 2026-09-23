@@ -11,6 +11,8 @@ import {
 
 import { clearRefreshTokenCookie, REFRESH_COOKIE_NAME, setRefreshTokenCookie } from "./refresh-cookie";
 import { UnauthorizedError } from "@platform/errors";
+//import { AuthenticatedRequest } from "./auth.middleware";
+import { findUserById } from "@infra/db";
 
 export async function registerController(
   req: Request,
@@ -133,4 +135,39 @@ export async function logoutController(
   clearRefreshTokenCookie(res);
 
   res.status(204).send();
+}
+
+export async function meController(
+  req: Request,
+  res: Response,
+) {
+  /* const authenticatedRequest =
+    req as AuthenticatedRequest;
+
+  const user = await findUserById(
+    authenticatedRequest.userId,
+  ); */
+  if (!req.userId) {
+    throw new UnauthorizedError(
+      'Authentication required',
+      'AUTH_TOKEN_MISSING',
+    );
+  }
+
+  const user = await findUserById(
+    req.userId,
+  );
+
+  if (!user) {
+    throw new UnauthorizedError(
+      'User not found',
+      'AUTH_USER_NOT_FOUND',
+    );
+  }
+
+  res.json({
+    id: user.id,
+    email: user.email,
+    name: user.name,
+  });
 }
