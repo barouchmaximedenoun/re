@@ -1,11 +1,14 @@
 import { AppError } from '@platform/errors';
 
 export class HttpError extends AppError {
+  public readonly data: unknown;
+
   constructor(
     message: string,
     options: {
       statusCode: number;
       code?: string;
+      data?: unknown;
       cause?: unknown;
     },
   ) {
@@ -16,5 +19,6 @@ export class HttpError extends AppError {
     });
 
     this.name = 'HttpError';
+    this.data = options.data;
   }
 }

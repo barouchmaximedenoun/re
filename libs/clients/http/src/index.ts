@@ -1,4 +1,7 @@
 export { createHttpClient } from './lib/client.js';
+
+export { HttpError } from './lib/http-error.js';
+
 export type {
   HttpClient,
   HttpClientOptions,
@@ -6,7 +9,5 @@ export type {
   HttpResponse,
   HttpMethod,
   TokenProvider,
+  TokenRefreshHandler,
 } from './lib/types.js';
-export type {
-  HttpError
-} from "./lib/http-error.js"

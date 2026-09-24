@@ -9,14 +9,19 @@ import type {
 import { registerAuthInterceptor } from './interceptors/auth.interceptor.js';
 import { registerLoggingInterceptors } from './interceptors/logging.interceptor.js';
 import { registerErrorInterceptor } from './interceptors/error.interceptor.js';
+import { registerRefreshInterceptor } from "./interceptors/refresh.interceptor.js";
 
 function toAxiosConfig(config?: HttpRequestConfig) {
   if (!config) return undefined;
+
   return {
     headers: config.headers,
     params: config.params,
     timeout: config.timeoutMs,
     signal: config.signal,
+    withCredentials: config.withCredentials,
+    skipAuth: config.skipAuth,
+    skipAuthRefresh: config.skipAuthRefresh,
   };
 }
 
@@ -74,10 +79,22 @@ export function createHttpClient(options: HttpClientOptions = {}): HttpClient {
     baseURL: options.baseURL,
     timeout: options.defaultTimeoutMs ?? 10_000,
     headers: options.defaultHeaders,
+    withCredentials: options.withCredentials ?? false,
   });
 
   registerAuthInterceptor(instance, options.getAccessToken);
-  registerLoggingInterceptors(instance, options.onRequestLog, options.onResponseLog);
+
+  registerRefreshInterceptor(
+    instance,
+    options.onTokenRefresh,
+  );
+
+  registerLoggingInterceptors(
+    instance,
+    options.onRequestLog,
+    options.onResponseLog,
+  );
+
   registerErrorInterceptor(instance);
 
   return new AxiosHttpClient(instance);
