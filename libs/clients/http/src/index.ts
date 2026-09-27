@@ -11,3 +11,7 @@ export type {
   TokenProvider,
   TokenRefreshHandler,
 } from './lib/types.js';
+
+export type { TokenStorage } from './lib/token-storage.js';
+export * from './lib/token-manager.js';
+

@@ -7,6 +7,8 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    //"module": "NodeNext",
+    //"moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -19,12 +21,19 @@
       }
     ],
     "paths": {
+      "@clients/http": ["../../libs/clients/http/src/index.ts"],
       "@/*": ["./src/*"]
     },
+    
     "types": ["jest", "node"],
     "outDir": "dist",
     "rootDir": "src",
-    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
+    //"rootDir": ".",
+    //"rootDirs": [
+      //".", 
+      //"../../libs/clients/http/src", 
+    //],
   },
   "include": [
     "src/**/*.ts",
@@ -33,7 +42,8 @@
     "src/**/*.jsx",
     "../../apps/web/.next/types/**/*.ts",
     "../../dist/apps/web/.next/types/**/*.ts",
-    "next-env.d.ts"
+    "next-env.d.ts",
+   // "../../libs/clients/http/src", 
   ],
   "exclude": [
     "out-tsc",
@@ -47,5 +57,10 @@
     "eslint.config.js",
     "eslint.config.cjs",
     "eslint.config.mjs"
+  ],
+  "references": [
+    {
+      "path": "../../libs/clients/http"
+    }
   ]
 }

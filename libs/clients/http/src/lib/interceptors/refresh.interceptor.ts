@@ -42,9 +42,17 @@ export function registerRefreshInterceptor(
         return Promise.reject(error);
       }
 
-      if (config.skipAuth) {
+      /*
+        une requête pourrait très bien ne pas envoyer de token mais quand même être autorisée 
+        à utiliser le mécanisme de refresh dans certains cas futurs 
+        on enleve ce code
+        if (config.skipAuth) {
         return Promise.reject(error);
-      }
+        et on garde le test precedent seulement 
+        if (config._retry || config.skipAuthRefresh) { 
+          return Promise.reject(error); 
+        }
+      } */
 
       config._retry = true;
 
@@ -54,7 +62,12 @@ export function registerRefreshInterceptor(
         });
       }
 
-      const newAccessToken = await state.promise;
+      let newAccessToken: string | null | undefined;
+      try {
+        newAccessToken = await state.promise;
+      } catch {
+        return Promise.reject(error);
+      }
 
       if (!newAccessToken) {
         return Promise.reject(error);
