@@ -1,6 +1,7 @@
 import type { HttpClient } from '@clients/http';
 
 import type {
+  AuthUser,
   LoginResult,
   RegisterResult,
   VerifyDeviceResult,
@@ -53,17 +54,18 @@ export class AuthService {
     otpChallengeId: string,
     otp: string,
   ): Promise<VerifyDeviceResult> {
-    const response = await this.http.post<VerifyDeviceResult>(
-      '/auth/verify-device',
-      {
-        otpChallengeId,
-        otp,
-      },
-      {
-        skipAuth: true,
-        skipAuthRefresh: true,
-      },
-    );
+    const response =
+      await this.http.post<VerifyDeviceResult>(
+        '/auth/verify-device',
+        {
+          otpChallengeId,
+          otp,
+        },
+        {
+          skipAuth: true,
+          skipAuthRefresh: true,
+        },
+      );
 
     return response.data;
   }
@@ -79,7 +81,10 @@ export class AuthService {
     );
   }
 
-  async me() {
-    return this.http.get('/auth/me');
+  async me(): Promise<AuthUser> {
+    const response =
+      await this.http.get<AuthUser>('/auth/me');
+
+    return response.data;
   }
 }
