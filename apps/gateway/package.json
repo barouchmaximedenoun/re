@@ -116,7 +116,9 @@
     "dotenv": "^17.4.2",
     "express": "^4.21.2",
     "jsonwebtoken": "9.0.3",
-    "pg": "8.22.0"
+    "pg": "8.22.0",
+    "@platform/errors": "workspace:*",
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",

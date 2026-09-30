@@ -1,6 +1,6 @@
-import type { AuthUser } from './auth-types.js';
-import { AuthService } from './auth-service.js';
-import { WebTokenManager } from './token-manager.js';
+import type { AuthUser } from './auth-types';
+import { AuthService } from './auth-service';
+import { WebTokenManager } from './web-token-manager';
 
 export type AuthSessionStatus =
   | 'loading'
@@ -136,5 +136,16 @@ export class AuthSession {
     } finally {
       this.setUnauthenticated();
     }
+  }
+  async register(
+    email: string,
+    password: string,
+    name: string,
+  ) {
+    return this.authService.register(
+      email,
+      password,
+      name,
+    );
   }
 }

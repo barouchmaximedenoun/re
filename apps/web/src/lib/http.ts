@@ -3,8 +3,8 @@ import {
   type HttpClient,
 } from '@clients/http';
 
-import { WebTokenManager } from '../auth/web-token-manager.js';
-import type { RefreshResult } from '../auth/auth-types.js';
+import { WebTokenManager } from '@/auth/web-token-manager';
+import type { RefreshResult } from '@/auth/auth-types';
 
 export interface WebHttpContext {
   http: HttpClient;

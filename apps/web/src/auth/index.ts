@@ -1,12 +1,23 @@
 export {
   WebTokenManager,
-} from './web-token-manager.js';
+} from './web-token-manager';
 
 export { type TokenManager } from "@clients/http";
 
 
 
-export { AuthService } from './auth-service.js';
+export { AuthService } from './auth-service';
+
+export {
+  AuthSession,
+  type AuthSessionState,
+  type AuthSessionStatus,
+} from './auth-session';
+
+export {
+  AuthProvider,
+  useAuth,
+} from './auth-context';
 
 export type {
   AuthDevice,
@@ -17,4 +28,4 @@ export type {
   RefreshResult,
   RegisterResult,
   VerifyDeviceResult,
-} from './auth-types.js';
+} from './auth-types';

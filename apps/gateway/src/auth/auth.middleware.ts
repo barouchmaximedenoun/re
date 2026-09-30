@@ -69,11 +69,12 @@ export async function authenticate(
       );
     }
 
-    const authenticatedRequest =
+    /* const authenticatedRequest =
       req as AuthenticatedRequest;
 
     authenticatedRequest.userId =
-      user.id;
+      user.id; */
+    req.userId = payload.userId;
 
     next();
   } catch (error) {

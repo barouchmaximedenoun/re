@@ -63,7 +63,8 @@ services:
       dockerfile: docker/gateway/Dockerfile
     container_name: gateway
     environment:
-#      NODE_ENV: production
+#      NODE_ENV: production coomented in Dockerfile as well
+      CORS_ORIGIN: http://localhost:3000
       NODE_ENV: development
       HOST: 0.0.0.0
       PORT: 8000
@@ -76,6 +77,28 @@ services:
     depends_on:
       db-setup:
         condition: service_completed_successfully
+    networks:
+      - app-network
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    container_name: web
+
+    environment:
+      NODE_ENV: production
+#      NEXT_PUBLIC_API_URL: http://localhost:8000
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      gateway:
+        condition: service_started
+
     networks:
       - app-network
 

@@ -1,4 +1,4 @@
-import { TokenManager, TokenRefreshHandler } from "@clients/http";
+import { TokenManager } from "@clients/http";
 import { WebTokenStorage } from "./web-token-storage";
 
 export class WebTokenManager extends TokenManager {
